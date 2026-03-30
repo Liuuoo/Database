@@ -1,0 +1,37 @@
+# ==========================================
+# 1. 基础设置
+# ==========================================
+cmake_minimum_required(VERSION 3.10)
+project(DataBase VERSION 1.0)
+
+# 设置输出目录（让生成的 exe 放在 bin 文件夹里）
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+# ==========================================
+# 2. 查找第三方库 (以 OpenCV 为例，可选)
+# ==========================================
+# find_package(OpenCV REQUIRED)
+
+# ==========================================
+# 3. 配置头文件和源文件
+# ==========================================
+# 自动搜索 src 目录下所有的 .cpp 文件
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+
+# 让 CMake 知道去哪里找 .h 头文件
+include_directories(include)
+
+# ==========================================
+# 4. 生成目标
+# ==========================================
+# 创建可执行程序
+add_executable(${PROJECT_NAME} ${SOURCES})
+
+# ==========================================
+# 5. 链接库
+# ==========================================
+# 如果有第三方库，在这里链接
+# target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBS})
+
+# 如果你自己写了库文件，也可以这样链接
+# target_link_libraries(${PROJECT_NAME} my_custom_lib)
