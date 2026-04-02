@@ -23,7 +23,7 @@ public:
         std::string_view value = s.substr(index3 + 1, index4 - index3 - 1);
         if(op == "GET")
         {
-            cmd.type = GET; // 
+            cmd.type = GET; 
         }
         else if(op == "PUT")
         {
