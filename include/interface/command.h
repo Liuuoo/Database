@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <string>
 #include <ostream>
+#include "../common/status.h"
 enum opType : uint8_t { GET = 1, PUT = 2, DELETE = 3 };
 
 class Command
@@ -16,31 +17,21 @@ private:
     bool tombstone_flag = false; // 墓碑标志, 默认值为false，表示未删除
 
 public:
-    friend std::ostream& operator<<(std::ostream& os, const Command& cmd)
-    {
-        os << "Command Type: " << static_cast<int>(cmd.type) << std::endl;
-        os << "Key Size: " << cmd.key_size << std::endl;
-        os << "Value Size: " << cmd.value_size << std::endl;
-        os << "Key: " << cmd.key << std::endl;
-        os << "Value: " << cmd.value << std::endl;
-        os << "Timestamp: " << cmd.timestamp << std::endl;
-        os << "Tombstone Flag: " << (cmd.tombstone_flag ? "true" : "false") << std::endl;
-        return os;
-    }
+    // 重写输出流运算符，方便调试和日志记录
+    friend std::ostream& operator<<(std::ostream& os, const Command& cmd); 
+
     Command() = default; // 默认构造函数
-    void SetCmd(opType t, const std::string& k, const std::string& v, uint64_t ts = 0, bool tombstone = false)
-    {
-        type = t;
-        key_size = k.size();
-        value_size = v.size();
-        key = k;
-        value = v;
-        timestamp = ts;
-        tombstone_flag = tombstone;
-    }
+
+    // 设置命令的属性，并返回状态
+    Status SetCmd(opType t, const std::string& k, const std::string& v, uint64_t ts = 0, bool tombstone = false);
+
     opType GetType() const { return type; }
+
     std::string GetKey() const { return key; }
+
     std::string GetValue() const { return value; }
+
     uint64_t GetTimestamp() const { return timestamp; }
+    
     bool IsTombstone() const { return tombstone_flag; }
 };
